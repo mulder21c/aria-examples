@@ -280,7 +280,7 @@
 		updateStatus : function(count){
 			var me = this;
 			if( me.settings['useAria'] === true ){
-				me.status.empty().append( $('<div class="hidden-accessible" />').text(count + '개의 추천 검색어가 있습니다.') );
+				me.status.empty().append( $('<div />').text(count + '개의 추천 검색어가 있습니다.') );
 			}
 		},
 		/**
@@ -344,7 +344,8 @@
 			me.status = $('<div />').attr({
 				'role' : 'status',
 				'aria-live' : 'polite',
-				'aria-relevant' : 'additions'
+				'aria-relevant' : 'additions',
+				'class' : 'hidden-accessible'
 			}).appendTo(me.frm);
 		}
 
