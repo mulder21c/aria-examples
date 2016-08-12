@@ -47,13 +47,14 @@
 				break;
 			default : 				
 				orgKeyword = keyword;
+				// 일정 시간 동안 키 입력이 없을 때 API 호출
 				clearTimeout(delayTimer);
 				delayTimer = setTimeout(function(){
 					if( keyword === '' ){
 						removeList();
 						return;
 					}
-					callAPI(keyword, renderList);
+					callAPI(keyword);
 				}, 400);
 		}
 	}
@@ -61,9 +62,8 @@
 	/**
 	 * @function callAPI
 	 * @param {string} keyword
-	 * @param {function} callback
 	 */
-	function callAPI(keyword, callback){
+	function callAPI(keyword){
 		$.ajax({
 			url : 'https://apis.daum.net/search/book',
 			data : {
@@ -79,15 +79,15 @@
 			cache : false
 		})
 		.done(function(data){
+			// JSON 데이터 가공 (검색어로 쓸 데이터만 추출)
 			for (var i = -1, source = [], item = null; 
 					item = data.channel.item[++i] ; ){
 				source.push(
 					item['title'].replace(/\&lt;b\&gt;|\&lt;\/b\&gt;/g, '')
 				)
 			}
-			if(callback){
-				callback(source);
-			}
+			// 추출된 검색어 목록으로 검색 목록을 렌더링
+			renderList(source);
 		});
 	}
 
@@ -110,6 +110,7 @@
 			.appendTo($suggestedWrap)
 			.on({
 				'mousedown' : function(event){
+					// 마우스로 선택 시 처리
 					event = event || window.event;
 					event.stopPropagation();
 					var activatedItem = $txtField.attr('aria-activedescendant');
@@ -142,7 +143,6 @@
 			.append(docFrag);
 
 		// 상태 정보 업데이트
-
 		$txtField.removeAttr('aria-activedescendant').attr({'aria-expanded' : 'true'});
 		var state = $('<div />').text(source.length + '개의 추천 검색어가 있습니다.');
 		$status.empty().append(state);
@@ -209,7 +209,7 @@
 
 	/**
 	 * @function selectItem
-	 * @param {number} idx
+	 * @param {number} idx the index number of Item that will be selected
 	 */ 
 	function selectItem(idx){
 		if(idx < 0 || $suggestedList === null || idx >= $suggestedList.data('count') ){
@@ -230,7 +230,7 @@
 
 	/**
 	 * @function deSelectItem
-	 * @param {number} idx
+	 * @param {number} idx the index number of Item that will be deselected
 	 */
 	function deSelectItem(idx){
 		$suggestedList.children('li:eq('+ idx +')').removeClass('active');
