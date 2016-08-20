@@ -26,6 +26,12 @@
 		'aria-relevant' : 'additions'
 	}).appendTo($autocomplete);
 
+	// $txtField 요소에 keyboard 이벤트 핸들러 바인딩
+	$txtField.on({
+		keyup : updateList,
+		keydown : bindKeyEvent
+	});
+
 	/**
 	 * @function updateList
 	 * @param {event} event
@@ -139,6 +145,9 @@
 			 .appendTo(docFrag);
 		}
 		$suggestedList
+			.attr({
+				'data-count' : source.length
+			})
 			.empty()
 			.append(docFrag);
 
@@ -246,12 +255,6 @@
 			$txtField.removeAttr('aria-activedescendant').attr({'aria-expanded' : 'false'});
 			$status.empty();
 		}
-	}	
-
-	// $txtField 요소에 keyboard 이벤트 핸들러 바인딩
-	$txtField.on({
-		keyup : updateList,
-		keydown : bindKeyEvent
-	});
+	}
 
 })(window, jQuery);
