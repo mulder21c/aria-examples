@@ -57,7 +57,7 @@
 			me.suggestList.children('li:eq('+ idx +')').removeClass('active');
 		},
 		/*
-		 * event handler for key-up event
+		 * event handler for key-down event
 		 * @function bindKeyEvent
 		 * @memberof AutoCompleteUI.prototype
 		 */
@@ -137,7 +137,7 @@
 			}
 		},
 		/*
-		 * event handler for key-down event
+		 * event handler for key-up event
 		 * @function updateList
 		 * @memberof AutoCompleteUI.prototype
 		 */
