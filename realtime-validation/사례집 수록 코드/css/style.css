@@ -1,14 +1,13 @@
-@charset  "utf-8";
+@charset "utf-8";
 /*------------------------------------*\
-	Reset CSS 
-		- based  Eric-Meyer's CSS Reset
+	Reset CSS
+		- based Eric-Meyer's CSS Reset
 \*------------------------------------*/
 html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,main,hgroup,menu,nav,section,summary,time,mark,audio,video{
 	background:transparent;
 	margin:0;
 	padding:0;
 	border:0;
-	outline:0;
 	max-width:100%
 }
 article,aside,details,figcaption,figure,footer,header,main,menu,nav,section{
@@ -86,11 +85,11 @@ em{
 	margin-right:.5em
 }
 .hidden-accessible{
-	overflow:hidden !important;
-	clip:rect(1px,1px,1px,1px) !important;
-	position:absolute !important;
-	width:1px !important;
-	height:1px !important
+	overflow:hidden;
+	clip:rect(1px,1px,1px,1px);
+	position:absolute;
+	width:1px;
+	height:1px
 }
 .clearfix:after{
 	clear:both;
@@ -121,21 +120,8 @@ body{
 	Example's Layout
 \*------------------------------------*/
 .wrap{
-	display:-webkit-box;
-	display:-moz-box;
-	display:-ms-flexbox;
-	display:-webkit-flex;
-	display:flex;
 	margin-top:1em;
 	height:80%
-}
-[class^="column-"]{
-	-webkit-flex:1;
-	flex:1;
-	padding:0 2em 0 2em
-}
-[class^="column-"]:first-child{
-	border-right:2px solid #ccc
 }
 
 fieldset{
