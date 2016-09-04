@@ -43,7 +43,7 @@
 			var value = me.suggestList.children('li:eq(' + idx + ')').addClass('active').text();
 			if(me.settings['useAria'] === true){
 				me.combobox.attr({'aria-activedescendant' : me.prefix + 'item' + idx}).val(value);
-			}else{				
+			}else{
 				me.combobox.attr({'data-activedescendant' : me.prefix + 'item' + idx}).val(value);
 			}
 		},
@@ -232,7 +232,7 @@
 						return;
 					}
 					me.removeList.apply(me, arguments);
-				} 
+				}
 			});
 
 			var docFrag = document.createDocumentFragment();
@@ -261,7 +261,7 @@
 			var me = this;
 			if( me.suggestList !== null ){
 				me.suggestList.remove();
-				me.suggestList = null;				
+				me.suggestList = null;
 				if( me.settings['useAria'] === true ){
 					me.combobox.removeAttr('aria-activedescendant');
 					me.combobox.attr({'aria-expanded' : 'false'});
@@ -272,7 +272,7 @@
 			}
 		},
 		/**
-		 * update status of resulting rendering suggested list 
+		 * update status of resulting rendering suggested list
 		 * @function updateStatus
 		 * @memberof AutoCompleteUI.prototype
 		 * @param {number} count the count of suggested items

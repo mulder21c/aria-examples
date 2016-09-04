@@ -2,9 +2,9 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="./css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css" />
 	<title>필수 입력 항목 example</title>
+	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="http://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css">
 </head>
 <body>
 	<h1>
@@ -25,11 +25,11 @@
 						<label for="userId2">아이디 *</label>
 					</li>
 					<li>
-						<input type="text" id="userName2" name="userName2" maxlength="20" >
+						<input type="text" id="userName2" name="userName2" maxlength="20">
 						<label for="userName2">이름</label>
 					</li>
 					<li>
-						<input type="text" id="phoneNumber2" name="phoneNumber2" maxlength="13" >
+						<input type="text" id="phoneNumber2" name="phoneNumber2" maxlength="13">
 						<label for="phoneNumber2">휴대폰 번호</label>
 					</li>
 					<li>
@@ -50,7 +50,7 @@
 			event = event || window.event;
 			var val = this.value.trim();
 			switch(event.type){
-				case 'focusin' : 
+				case 'focusin' :
 					$(this).removeClass('filled').addClass('active');
 					break;
 				case 'focusout' :

@@ -11,7 +11,7 @@
 		orgKeyword = '',
 		// 사용자의 키 입력 중 수시로 추천 검색어를 가져오는 것을 방지하기 위한 타이머
 		delayTimer = null;
-	
+
 	// WAI-ARIA Role, Property, State 초기화
 	$txtField.attr({
 		'role' : 'combobox',
@@ -46,12 +46,12 @@
 		}
 		switch(keycode){
 			case 13 :
-			case 27 : 
+			case 27 :
 			case 38 :
-			case 40 : 
+			case 40 :
 				event.preventDefault ? event.preventDefault() : event.returnValue = false;
 				break;
-			default : 				
+			default :
 				orgKeyword = keyword;
 				// 일정 시간 동안 키 입력이 없을 때 API 호출
 				clearTimeout(delayTimer);
@@ -86,7 +86,7 @@
 		})
 		.done(function(data){
 			// JSON 데이터 가공 (검색어로 쓸 데이터만 추출)
-			for (var i = -1, source = [], item = null; 
+			for (var i = -1, source = [], item = null;
 					item = data.channel.item[++i] ; ){
 				source.push(
 					item['title'].replace(/\&lt;b\&gt;|\&lt;\/b\&gt;/g, '')
@@ -100,13 +100,13 @@
 	/**
 	 * @function renderList
 	 * @param {array} source
-	 */ 
+	 */
 	var $suggestedList = null;
 	function renderList(source){
 		if($suggestedList === null){
 			// 추천 검색어 목록 생성
 			$suggestedList = $('<ul class="listbox" />');
-			// 추천 검색어 목록 초기화 
+			// 추천 검색어 목록 초기화
 			// WAI-ARIA 적용, 이벤트 바인딩
 			$suggestedList
 			.attr({
@@ -132,10 +132,10 @@
 						return;
 					}
 					removeList();
-				} 
+				}
 			});
 		}
-		
+
 		// source로부터 추천 검색어 항목 생성
 		var docFrag = document.createDocumentFragment();
 		for(var i = -1, item = null; item = source[++i];){
@@ -156,7 +156,7 @@
 		var state = $('<div />').text(source.length + '개의 추천 검색어가 있습니다.');
 		$status.empty().append(state);
 	}
-	
+
 	/**
 	 * @function bindKeyEvent
 	 * @param {event} event
@@ -168,7 +168,7 @@
 			idx = 0,
 			activatedItem = $txtField.attr('aria-activedescendant');
 		switch(keycode){
-			case 13 :   // enter
+			case 13 :	// enter
 				// 선택된 항목이 있는 경우
 				if(activatedItem !== undefined){
 					event.preventDefault ? event.preventDefault() : event.returnValue = false;
@@ -178,12 +178,12 @@
 					$txtField.parents('form').submit();
 				}
 				break;
-			case 27 :   // Esc
+			case 27 :	// Esc
 				event.preventDefault ? event.preventDefault() : event.returnValue = false;
 				$txtField.val(orgKeyword);
 				removeList();
 				break;
-			case 38 :   // up arrow key
+			case 38 :	// up arrow key
 				event.preventDefault ? event.preventDefault() : event.returnValue = false;
 				if($suggestedList === null ){
 					return;
@@ -198,7 +198,7 @@
 				deSelectItem(idx + 1);
 				selectItem(idx);
 				break;
-			case 40 :   // down arrow key
+			case 40 :	// down arrow key
 				event.preventDefault ? event.preventDefault() : event.returnValue = false;
 				if($suggestedList === null ){
 					return;
@@ -219,7 +219,7 @@
 	/**
 	 * @function selectItem
 	 * @param {number} idx the index number of Item that will be selected
-	 */ 
+	 */
 	function selectItem(idx){
 		if(idx < 0 || $suggestedList === null || idx >= $suggestedList.data('count') ){
 			$txtField.val(orgKeyword);

@@ -2,16 +2,16 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="./css/style.css" />
 	<title>time limit example</title>
+	<link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 	<p class="hidden-accessible">
-        로그인 후 10분 동안 화면 이동이 없을 시 자동으로 로그아웃 되며, 
-        로그아웃 1분전에 로그인연장 화면으로 전환됩니다. <br>
-        로그인 연장을 하시려면 키보드의 backspace 키를 누르시면, 
-        사이트 접속시간이 연장됩니다.
-    </p>
+		로그인 후 10분 동안 화면 이동이 없을 시 자동으로 로그아웃 되며,
+		로그아웃 1분전에 로그인연장 화면으로 전환됩니다. <br>
+		로그인 연장을 하시려면 키보드의 backspace 키를 누르시면,
+		사이트 접속시간이 연장됩니다.
+	</p>
 	<div class="wrap">
 		<h1>
 			time limit example
@@ -24,7 +24,7 @@
 		</div>
 		<div class="layerpop" id="popContent" role="dialog" aria-labelledby="pop-title" aria-describedby="pop-content">
 			<div class="pop-inner">
-				<img src="./images/txt_auto_logout_info.gif" alt="자동 로그아웃 안내" id="pop-title" >
+				<img src="./images/txt_auto_logout_info.gif" alt="자동 로그아웃 안내" id="pop-title">
 				<div id="pop-content">
 					<strong>자동 로그아웃 남은시간: <em id="cntMsg">60</em>초</strong>
 					<p>고객님의 안전한 금융거래를 위해 로그인 후
@@ -46,7 +46,7 @@
 
 			var stTime = null,
 				tm = null;
-			
+
 			/**
 			 * popup layer open
 			 * @function openLayer
@@ -93,7 +93,7 @@
 			var shiftPressed = false,
 				popup = $('#popContent').get(0),
 				firstBtn = $('#popContent button:first').get(0),
-				lastBtn =  $('#popContent button:last').get(0);
+				lastBtn =	$('#popContent button:last').get(0);
 
 			/**
 			 * detect shift key released
@@ -129,7 +129,7 @@
 					// 연장하기 버튼(레이어 내 첫번째 focusable element)에서 shift + tab 이동
 					event.preventDefault ? event.preventDefault() : event.returnValue = false;
 					popup.focus();
-				}else if(!shiftPressed &&  keycode === 9 && event.target === lastBtn){	
+				}else if(!shiftPressed && keycode === 9 && event.target === lastBtn){
 					// 로그아웃 버튼(레이어 내 마지막 focusable element)에서 tab 이동
 					event.preventDefault ? event.preventDefault() : event.returnValue = false;
 					popup.focus();
