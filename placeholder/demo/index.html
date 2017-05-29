@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>placeholder example</title>
+	<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+	<h1>Placeholder example</h1>
+	<div class="placeholder-example">
+		<label for="user-name">아이디</label>
+		<input type="text" name="user-id" id="user-name" placeholder="홍길동"><br>
+		<label for="user-email">이메일</label>
+		<input type="text" name="user-email" id="user-email" placeholder="example@mydoamin.com"><br>
+		<label for="user-homepage">홈페이지</label>
+		<input type="text" name="user-homepage" id="user-homepage" placeholder="http://www.myhome.com">
+	</div>
+	<script src="./js/mulder21c-placeholder.min.js"></script>
+	<script>
+		Placeholder({
+			selector : "input[placeholder]"
+		});
+	</script>
+</body>
+</html>
