@@ -194,6 +194,7 @@
           return;
         }
       }
+
       if(anchr = me.tabs[i].getElementsByTagName("a")[0]){
         anchr.setAttribute("role", "presentation");
         anchr.setAttribute("tabindex", "-1");
