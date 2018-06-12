@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Tab UI example</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <h1>
+    Tab UI example
+  </h1>
+  <div class="mulder21c-tabui" aria-labelledby="heading">
+    <h2 id="heading" class="hidden-accessible">탭 콘텐츠</h2>
+    <ul class="tablist">
+      <li id="tab1" data-controls="tabpanel1" class="tab"><a href="#tabpanel1">메뉴</a></li>
+      <li id="tab2" data-controls="tabpanel2" class="tab"><a href="#tabpanel2">메뉴</a></li>
+      <li id="tab3" data-controls="tabpanel3" class="tab"><a href="#tabpanel3">메뉴</a></li>
+    </ul>
+    <div id="tabpanel1" class="tabpanel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo sunt doloremque ut totam perferendis id placeat aut ipsa? Non eius ipsam repudiandae quasi accusamus hic et nesciunt dolore aliquam voluptates.</p>
+    </div>
+    <div id="tabpanel2" class="tabpanel">
+      탭 패널 2
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia suscipit omnis labore aliquam impedit autem pariatur praesentium qui vel architecto deserunt ut ea eum nesciunt molestiae quod quasi ipsam accusamus.</p>
+    </div>
+    <div id="tabpanel3" class="tabpanel">
+      <button type="button">테스트</button>
+      탭 패널 3
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem possimus laborum quibusdam tenetur doloremque nostrum id ex neque aperiam quidem ratione quas ut explicabo eligendi voluptas fuga mollitia repellat eum.</p>
+    </div>
+  </div>
+  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="./js/mulder21c-tabui.js"></script>
+  <script>
+    $(".mulder21c-tabui").TabUI();
+  </script>
+</body>
+</html>
