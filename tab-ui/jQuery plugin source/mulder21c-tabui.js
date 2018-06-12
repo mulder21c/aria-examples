@@ -11,151 +11,157 @@
   var TabUI = function(elem){
     this.tabContent = elem;
   }
-    /**
-     * defaults options
-     */
+
+  /**
+   * defaults options
+   */
   var defaults = {
-      tabListSelector : ".tablist",
-      tabSelector : ".tab",
-      tabPanelSelector : ".tabpanel",
-      activeClass : "active-tab",
-      startTab : 0,
-      useAria : true
-    },
-    keymap = {
-      TAB : 9,
-      ENTER : 13,
-      SHIFT : 16,
-      SPACE : 32,
-      LEFT_ARROW : 37,
-      UP_ARROW : 38,
-      RIGHT_ARROW : 39,
-      DOWN_ARROW : 40
-    },
-    /**
-     * functional Key Pressed State
-     */
-    shiftPressed = false;
+    tabListSelector: ".tablist",
+    tabSelector: ".tab",
+    tabPanelSelector: ".tabpanel",
+    activeClass: "active-tab",
+    startTab: 0
+  };
+
+  var keymap = {
+    TAB: 9,
+    ENTER: 13,
+    SHIFT: 16,
+    SPACE: 32,
+    LEFT_ARROW: 37,
+    RIGHT_ARROW: 39
+  }
 
   TabUI.prototype = {
-    activateTab : function(event, target){
+    /**
+     * Activate Certain Tab By IndexNumber
+     * @function activateTab
+     * @memberof TabUI.prototype
+     * @param {number} The index number of the tab to activate (zero-based)
+     */
+    activateTab: function(idx){
       var me = this;
-      if(target !== undefined){
-        me.currIdx = $(me.tabContent).find(me.opts.tabSelector).index(target);
-      }
-      me.tabs[me.currIdx].focus();
+      $(me.tabs)
+        .attr({
+          "tabindex": "-1",
+          "aria-selected": "false"
+        });
+      $(me.tabs[idx])
+        .attr({
+          "tabindex": "0",
+          "aria-selected": "true"
+        })
+        .addClass(me.opts.activeClass);
+      $("#" + me.tabs[idx].getAttribute("aria-controls"))
+        .addClass(me.opts.activeClass);
     },
-    selectTab : function(event){
+    /**
+     * moves focus to the previous tab. 
+     * If focus is on the first tab, moves focus to the last tab.
+     * @function prevTabFocus
+     * @memberof TabUI.prototype
+     * @param {event}
+     */
+    prevTabFocus: function(event){
       event = event || window.event;
-      if(event){
-        event.preventDefault ? event.preventDefault() : event.returnValue = false;
-        event.stopPropagation();
-      }
+      event.preventDefault ? event.preventDefault() : event.returnValue = false;
       var me = this;
-      for(var i = -1, control = null, cnt = me.tabs.length; ++i < cnt;){
-        control = me.tabs[i].getAttribute("aria-controls") || me.tabs[i].getAttribute("data-controls") || me.tabs[i].getAttribute("href");
-        control = control ? control.replace(/.*#/, "") : "";
-        if(i === me.currIdx){
-          $(me.tabs[i])
-            .addClass(me.opts.activeClass)
-            .attr(me.opts.useAria === true ? {
-                "tabindex" : "0",
-                "aria-selected" : "true"
-              } : {
-                "tabindex" : "0"
-              });
-          $('#' + control)
-            .addClass(me.opts.activeClass)
-            .attr(me.opts.useAria === true ? {
-                "aria-hidden" : "false"
-              } : {});
-        }else{
-          $(me.tabs[i])
-            .removeClass(me.opts.activeClass)
-            .attr(me.opts.useAria === true ? {
-                "tabindex" : "-1",
-                "aria-selected" : "false"
-              } : {
-                "tabindex" : "-1"
-              });
-          $('#' + control)
-            .removeAttr("tabindex")
-            .removeClass(me.opts.activeClass)
-            .attr(me.opts.useAria === true ? {
-                "aria-hidden" : "true"
-              } : {});
-        }
+      var $prevElem = $(event.target).prev(".tab");
+      if($prevElem.length < 1){
+        $prevElem = $(me.tabs[me.tabs.length - 1]);
       }
+      $(me.tabs)
+         .attr("tabindex", "-1");
+      $prevElem
+        .attr("tabindex", "0")
+        .focus();
     },
-    accessTabPanel : function(event){
-      var me = this,
-        control = null;
-      if(shiftPressed === false){
-        event = event || window.event;
-        if($(event.currentTarget).hasClass(me.opts.activeClass) === false){
-          return;
-        }
-        control = event.currentTarget.getAttribute("aria-controls") || event.currentTarget.getAttribute("data-controls") || event.currentTarget.getAttribute("href");
-        control = document.getElementById(control.replace(/.*#/, ""));
-        event.preventDefault ? event.preventDefault() : event.returnValue = false;
-        control.setAttribute("tabindex", "-1");
-        control.focus();
-      }
-    },
-    nextTabFocus : function(event){
+    /**
+     * moves focus to the next tab. 
+     * If focus is on the last tab, moves focus to the first tab.
+     * @function nextTabFocus
+     * @memberof TabUI.prototype
+     * @param {event}
+     */
+    nextTabFocus: function(event){
       event = event || window.event;
-      if(event){
-        event.preventDefault ? event.preventDefault() : event.returnValue = false;
-        event.stopPropagation();
-      }
+      event.preventDefault ? event.preventDefault() : event.returnValue = false;
       var me = this;
-      me.currIdx = ++me.currIdx > me.tabs.length - 1 ? 0 : me.currIdx;
-      me.activateTab.apply(me);
-    },
-    prevTabFocus : function(event){
-      event = event || window.event;
-      if(event){
-        event.preventDefault ? event.preventDefault() : event.returnValue = false;
-        event.stopPropagation();
+      var $nextElem = $(event.target).next(".tab");
+      if($nextElem.length < 1){
+        $nextElem = $(me.tabs[0]);
       }
-      var me = this;
-      me.currIdx = --me.currIdx < 0 ? me.tabs.length - 1 : me.currIdx;
-      me.activateTab.apply(me);
+      $(me.tabs)
+         .attr("tabindex", "-1");
+      $nextElem
+        .attr("tabindex", "0")
+        .focus();
     },
-    keyRelease : function(event){
+    /**
+     * Activates the tab
+     * @function selectTab
+     * @memberof TabUI.prototype
+     * @param {event}
+     */
+    selectTab: function(event){
       event = event || window.event;
+      event.preventDefault ? event.preventDefault() : event.returnValue = false;
+      event.stopPropagation();
+      var me = this;
+      var $relPanel = $("#" + event.currentTarget.getAttribute("aria-controls"));
+      $(me.tabs)
+        .attr("aria-selected", "false")
+        .removeClass(me.opts.activeClass);
+      $(event.currentTarget)
+        .attr("aria-selected", "true")
+        .addClass(me.opts.activeClass);
+      $(me.tabpanels)
+        .removeClass(me.opts.activeClass);
+      $relPanel
+        .addClass(me.opts.activeClass);
+    },
+    accessTabPanel: function(event){
+      if(event.shiftKey) return;
+      event.preventDefault ? event.preventDefault() : event.returnValue = false;
+      var $relPanel = $("#" + event.currentTarget.getAttribute("aria-controls"));
+      var me = this;
+
+      $(me.tabpanels)
+        .attr({
+          "tabindex": "-1",
+          "aria-hidden": "true"
+        })
+      $relPanel
+        .attr({
+          "tabindex": "0",
+          "aria-hidden": "false"
+        })
+        .focus();
+    },
+    /**
+     * Processor mapping by key
+     * @function keyEventHandler
+     * @memberof TabUI.prototype
+     * @param {event}
+     */
+    keyEventHandler: function(event){
+      event = event || window.event;
+      var me = this;
       var keycode = event.keyCode || event.which;
+
       switch(keycode){
-        case keymap.SHIFT :
-          event.preventDefault ? event.preventDefault() : event.returnValue = false;
-          event.stopPropagation();
-          if(event.type === "keyup"){
-            shiftPressed = false;
-          }else if(event.type === "keydown"){
-            shiftPressed = true;
-          }
+        case keymap.LEFT_ARROW:
+          me.prevTabFocus.call(me, event);
           break;
-      }
-    },
-    bindKeyEvents : function(event){
-      event = event || window.event;
-      var me = this,
-        keycode = event.keyCode || event.which;
-      switch(keycode){
-        case keymap.UP_ARROW :
-        case keymap.LEFT_ARROW :
-          me.prevTabFocus.apply(me, arguments);
+        case keymap.RIGHT_ARROW: 
+          me.nextTabFocus.call(me, event);
           break;
-        case keymap.DOWN_ARROW :
-        case keymap.RIGHT_ARROW :
-          me.nextTabFocus.apply(me, arguments);
+        case keymap.SPACE: 
+        case keymap.ENTER:
+          me.selectTab.call(me, event);
           break;
-        case keymap.SPACE :
-        case keymap.ENTER :
-          me.selectTab.apply(me, arguments);
-          break;
-        case keymap.TAB :
-          me.accessTabPanel.apply(me, arguments);
+        case keymap.TAB:
+          me.accessTabPanel.call(me, event);
           break;
       }
     }
@@ -170,22 +176,21 @@
    * @param {string} [settings.tabPanelSelector=".tabpnel"] selector for the elements intented tab-panel
    * @param {string} [settings.activeClass="active-tab"] the class name intended to indicate active elements
    * @param {number} [settings.startTab=0] starting tab index (zero-based)
-   * @param {boolean} [settings.useAria=true] whether or not to use WAI-ARIA
    */
   TabUI.prototype.initialize = function(settings){
-    var me = this,
-      opts = me.opts = $.extend({}, defaults, settings);
-    me.tablist = me.tabContent.querySelector(opts.tabListSelector);
-    me.tabs = me.tabContent.querySelectorAll(opts.tabSelector);
-    me.tabpanels = me.tabContent.querySelectorAll(opts.tabPanelSelector);
-    opts.startTab = opts.startTab < 0 ? 0 : opts.startTab;
-    opts.startTab = opts.startTab > me.tabs.length ? me.tabs.length - 1 : opts.startTab;
-    me.currIdx = opts.startTab;
+    var me = this;
+    me.opts = $.extend({}, defaults, settings);
+    me.tablist = me.tabContent.querySelector(me.opts.tabListSelector);
+    me.tabs = me.tabContent.querySelectorAll(me.opts.tabSelector);
+    me.tabpanels = me.tabContent.querySelectorAll(me.opts.tabPanelSelector);
+    me.opts.startTab = me.opts.startTab < 0 ? 0 : me.opts.startTab;
+    me.opts.startTab = me.opts.startTab > me.tabs.length ? me.tabs.length - 1 : me.opts.startTab;
 
-    // verifying tab - tabpanel relations
-    for(var i = -1, control = "", cnt = me.tabs.length, anchr; ++i < cnt;){
+    for(var i = -1, control = "", tabid = "", cnt = me.tabs.length, anchr; ++i < cnt;){
       control = me.tabs[i].getAttribute("data-controls") || me.tabs[i].getAttribute("href");
       control = control ? control.replace(/.*#/, "") : "";
+
+      // verifying tab - tabpanel relations
       if(control === "" || !document.getElementById(control)){
         try{
           throw new Error("no element with matching 'data-controls' or 'href' ");
@@ -194,42 +199,43 @@
           return;
         }
       }
-      if(anchr = me.tabs[i].getElementsByTagName("a")[0]){
-        anchr.setAttribute("role", "presentation");
-        anchr.setAttribute("tabindex", "-1");
+      
+      if(!(tabid = me.tabs[i].getAttribute("id"))){
+        tabid = "mulder21c-tabui" + i + new Date().getTime();
+        me.tabs[i].setAttribute("id", tabid);
       }
 
-      // initailly WAI-ARA Set
-      if(opts.useAria === true){
-        me.tablist.setAttribute("role", "tablist");
-        me.tabs[i].setAttribute("role", "tab");
-        me.tabs[i].setAttribute("aria-controls", control);
-        me.tabs[i].removeAttribute("data-controls");
-        me.tabpanels[i].setAttribute("role", "tabpanel");
+      // setting WAI-ARA Roles, Properties
+      if(anchr = me.tabs[i].querySelector("a")){
+        $(anchr).attr({
+          "role": "presentation",
+          "tabindex": "-1"
+        });
       }
+      $(me.tabs[i]).attr({
+        "role": "tab",
+        "aria-controls": control
+      });
+      $("#" + control).attr({
+        "role": "tabpanel",
+        "aria-labelledby": tabid
+      });
     }
+    me.tablist.setAttribute("role", "tablist");
+    
     $(me.tabContent).on({
-      "keydown.tabUI" : function(event){
-        me.bindKeyEvents.apply(me, arguments);
-      },
-      "click.tabUI" : function(event){
+      "keydown.tabUI": function(event){
         event = event || window.event;
-        me.activateTab.call(me, arguments, event.currentTarget);
-        me.selectTab.apply(me, arguments);
+        me.keyEventHandler.call(me, event);
+      },
+      "click.tabUI": function(event){
+        event = event || window.event;
+        me.activateTab($(me.tabs).index(this));
+        me.selectTab.call(me, event);
       }
     }, me.opts.tabSelector);
 
-    $(document).on({
-      "keyup.tabUI" : function(event){
-        me.keyRelease.apply(me, arguments);
-      },
-      "keydown.tabUI" : function(event){
-        me.keyRelease.apply(me, arguments);
-      }
-    });
-
-    // initailly open
-    me.selectTab.apply(me);
+    me.activateTab(me.opts.startTab);
   };
 
   /**
